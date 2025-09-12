@@ -97,7 +97,9 @@ public class JwtFilter implements Filter{
 
     // 특정 endpoint에 대해서는 인가 없이 컨트롤러 이동이 가능하도록
     public boolean isPath(String path) {
-        return path.startsWith("/swagger-ui") ||
-                path.startsWith("/v3/api-docs");
-    }
+    return path.startsWith("/swagger-ui")
+            || path.startsWith("/v3/api-docs")
+            || path.startsWith("/api/users/signup")
+            || path.startsWith("/api/users/signin");
+    }       
 }
