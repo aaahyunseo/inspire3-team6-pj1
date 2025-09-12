@@ -1,5 +1,10 @@
 package com.lgcns.inspire3_blog.weather.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -10,7 +15,9 @@ import com.lgcns.inspire3_blog.weather.dto.WeatherRequestDTO;
 import com.lgcns.inspire3_blog.weather.dto.WeatherResponseDTO;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class WeatherService {
@@ -24,15 +31,34 @@ public class WeatherService {
     @Value("${openApi.dataType}")
     private String dataType;
 
+    private static final String[] VALID_BASE_TIMES = {
+        "0200", "0500", "0800", "1100", "1400", "1700", "2000", "2300"
+    };
+
     public WeatherResponseDTO getWeatherInfo(WeatherRequestDTO request) {
+        LocalDateTime now = LocalDateTime.of(
+            LocalDate.parse(request.getBaseDate(), DateTimeFormatter.BASIC_ISO_DATE),
+            LocalTime.parse(request.getBaseTime(), DateTimeFormatter.ofPattern("HHmm"))
+        );
+
+        String adjustedBaseTime = adjustBaseTime(now);
+        String adjustedBaseDate = request.getBaseDate();
+
+        if (adjustedBaseTime.equals("2300") && now.getHour() < 2) {
+            adjustedBaseDate = now.minusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
+        }
+
         String url = callBackUrl
-                    + "?serviceKey=" + serviceKey
-                    + "&numOfRows=100&pageNo=1"
-                    + "&dataType=" + dataType
-                    + "&base_date=" + request.getBaseDate()
-                    + "&base_time=" + request.getBaseTime()
-                    + "&nx=60"
-                    + "&ny=127";
+                + "?serviceKey=" + serviceKey
+                + "&numOfRows=100&pageNo=1"
+                + "&dataType=" + dataType
+                + "&base_date=" + adjustedBaseDate
+                + "&base_time=" + adjustedBaseTime
+                + "&nx=60"
+                + "&ny=127";
+
+        log.info(">>> base_date={}, base_time={}", adjustedBaseDate, adjustedBaseTime);
+    
         
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -105,4 +131,28 @@ public class WeatherService {
         }
     }
 
+    /**
+     * 주어진 현재 시간(hhmm)과 가장 가까운 base_time 반환
+     * ex) 15:37 -> 1400, 18:05 -> 1700
+     */
+    private String adjustBaseTime(LocalDateTime now) {
+        int hhmm = now.getHour() * 100 + now.getMinute();
+
+        // 기본값: 가장 최근 시각
+        String selected = "0200";
+
+        for (String base : VALID_BASE_TIMES) {
+            int baseInt = Integer.parseInt(base);
+            if (hhmm >= baseInt) {
+                selected = base;
+            }
+        }
+
+        // 자정 ~ 새벽 2시 전까지는 전날 23시 예보 사용
+        if (hhmm < 200) {
+            selected = "2300";
+        }
+
+        return selected;
+    }
 }
