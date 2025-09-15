@@ -1,12 +1,18 @@
 package com.lgcns.inspire3_blog.user.domain.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.lgcns.inspire3_blog.todo.domain.entity.TodoList;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
@@ -41,4 +47,8 @@ public class UserEntity {
     private String birthday; // YYYY-MM-DD 문자열로 저장 (Date로 바꿔도 됨)
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TodoList> todos = new ArrayList<>();
+    
 }
