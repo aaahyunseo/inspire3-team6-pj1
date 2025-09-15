@@ -100,7 +100,6 @@ public class JwtFilter implements Filter{
     return path.startsWith("/swagger-ui")
             || path.startsWith("/v3/api-docs")
             || path.startsWith("/api/users/signup")
-            || path.startsWith("/api/users/signin")
-            || path.startsWith("/api/v1/todos");
+            || path.startsWith("/api/users/signin");
     }       
 }
