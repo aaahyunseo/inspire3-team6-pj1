@@ -1,5 +1,7 @@
 package com.lgcns.inspire3_blog.board.domain.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +19,7 @@ public class BoardRequestDTO {
     private Integer userId;
     private String title;
     private String content;
-    private String category;
+    private List<String> categories; // 카테고리 이름 리스트
     private String url;
-    private String hashtag;
+    private List<String> hashtags;   // 해시태그 이름 리스트
 }

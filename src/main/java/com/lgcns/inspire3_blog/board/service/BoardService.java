@@ -1,6 +1,8 @@
 package com.lgcns.inspire3_blog.board.service;
 
 import com.lgcns.inspire3_blog.board.domain.entity.BoardEntity;
+import com.lgcns.inspire3_blog.board.domain.entity.CategoryEntity;
+import com.lgcns.inspire3_blog.board.domain.entity.HashtagEntity;
 import com.lgcns.inspire3_blog.board.domain.dto.BoardRequestDTO;
 import com.lgcns.inspire3_blog.board.domain.dto.BoardResponseDTO;
 import com.lgcns.inspire3_blog.board.repository.BoardRepository;
@@ -19,38 +21,40 @@ public class BoardService {
     public List<BoardResponseDTO> select() {
         List<BoardEntity> entities = repository.findAll();
         return entities.stream()
-                .map(e -> new BoardResponseDTO(
-                        e.getBoardId(), e.getUserId(), e.getTitle(), e.getContent(),
-                        e.getCategory(), e.getUrl(), e.getHashtag(),
-                        e.getCreatedAt(), e.getViewCount(), e.getLikeCount()))
+                .map(BoardResponseDTO::from)
                 .collect(Collectors.toList());
     }
 
     public BoardResponseDTO insert(BoardRequestDTO dto) {
-        BoardEntity entity = new BoardEntity();
-        entity.setUserId(dto.getUserId());
-        entity.setTitle(dto.getTitle());
-        entity.setContent(dto.getContent());
-        entity.setCategory(dto.getCategory());
-        entity.setUrl(dto.getUrl());
-        entity.setHashtag(dto.getHashtag());
-        entity.setCreatedAt(java.time.LocalDate.now().toString());
-        entity.setViewCount(0);
-        entity.setLikeCount(0);
+        List<CategoryEntity> categoryEntities = dto.getCategories() == null ? null :
+            dto.getCategories().stream()
+                .map(name -> CategoryEntity.builder().name(name).build())
+                .collect(Collectors.toList());
+
+        List<HashtagEntity> hashtagEntities = dto.getHashtags() == null ? null :
+            dto.getHashtags().stream()
+                .map(name -> HashtagEntity.builder().name(name).build())
+                .collect(Collectors.toList());
+
+        BoardEntity entity = BoardEntity.builder()
+                .userId(dto.getUserId())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .categories(categoryEntities)
+                .url(dto.getUrl())
+                .hashtags(hashtagEntities)
+                .createdAt(java.time.LocalDate.now().toString())
+                .viewCount(0)
+                .likeCount(0)
+                .build();
         BoardEntity saved = repository.save(entity);
-        return new BoardResponseDTO(
-                saved.getBoardId(), saved.getUserId(), saved.getTitle(), saved.getContent(),
-                saved.getCategory(), saved.getUrl(), saved.getHashtag(),
-                saved.getCreatedAt(), saved.getViewCount(), saved.getLikeCount());
+        return BoardResponseDTO.from(saved);
     }
 
     public BoardResponseDTO findBoard(Integer boardId) {
         BoardEntity entity = repository.findById(boardId).orElse(null);
         if (entity == null) return null;
-        return new BoardResponseDTO(
-                entity.getBoardId(), entity.getUserId(), entity.getTitle(), entity.getContent(),
-                entity.getCategory(), entity.getUrl(), entity.getHashtag(),
-                entity.getCreatedAt(), entity.getViewCount(), entity.getLikeCount());
+        return BoardResponseDTO.from(entity);
     }
 
     // 좋아요 추가/취소 
