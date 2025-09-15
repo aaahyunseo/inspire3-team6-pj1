@@ -5,6 +5,7 @@ import com.lgcns.inspire3_blog.user.domain.dto.LoginResponseDTO;
 import com.lgcns.inspire3_blog.user.domain.dto.UserRequestDTO;
 import com.lgcns.inspire3_blog.user.domain.dto.UserResponseDTO;
 import com.lgcns.inspire3_blog.user.domain.entity.UserEntity;
+import com.lgcns.inspire3_blog.user.repository.RefreshTokenRepository;
 import com.lgcns.inspire3_blog.user.repository.UserRepository;
 import com.lgcns.inspire3_blog.user.repository.RefreshTokenRepository;
 import com.lgcns.inspire3_blog.util.JwtProvider;
@@ -85,4 +86,5 @@ public class UserService {
                 .refreshToken(refToken)
                 .build();
     }
+
 }
