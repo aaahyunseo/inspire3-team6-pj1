@@ -48,9 +48,20 @@ public class JwtFilter implements Filter{
         System.out.println("[debug] >>> client method : "+method);  
         
         // OPTIONS 요청은 바로 통과 (CORS는 SecurityConfig에서 처리) 이부분 바꿈 통합 필요
-        if ("OPTIONS".equalsIgnoreCase(method)) {
+        // if ("OPTIONS".equalsIgnoreCase(method)) {
+        //     chain.doFilter(request, response);
+        //     return;
+        // }
+        // preflight 문제 해결
+        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+            res.setStatus(HttpServletResponse.SC_OK);
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+            res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+            res.setHeader("Access-Control-Allow-Credentials", "true");
+
             chain.doFilter(request, response);
-            return;
+            return ;
         }
 
         // 인가 정보가 필요 없을 경우
@@ -95,7 +106,8 @@ public class JwtFilter implements Filter{
             || path.startsWith("/v3/api-docs")
             || path.startsWith("/api/users/signup")
             || path.startsWith("/api/users/signin")
-            || path.startsWith("/api/fortune")
-            || path.startsWith("/api/summary"); // 추후에 연결시 제거해야됌 권환 필요
+            || path.startsWith("/api/fortune") // 추후에 연결시 제거해야됌 권환 필요
+            || path.startsWith("/api/summary") // 추후에 연결시 제거해야됌 권환 필요
+            || path.startsWith("/api/users/logout"); // 추후에 연결시 제거해야됌 권환 필요
     }       
 }

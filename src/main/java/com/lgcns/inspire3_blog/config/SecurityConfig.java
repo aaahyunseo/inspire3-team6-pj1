@@ -49,6 +49,7 @@ public class SecurityConfig {
                     "/api/users/signin",
                     "/api/fortune/**",  // 추후에 연결시 제거해야됌 권환 필요
                     "/api/summary/**",
+                    "api/users/logout",
                     "/v3/api-docs/**"
                 ).permitAll()
                 .anyRequest().authenticated()
