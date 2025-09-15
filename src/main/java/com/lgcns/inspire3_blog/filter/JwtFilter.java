@@ -46,7 +46,7 @@ public class JwtFilter implements Filter{
         System.out.println("[debug] >>> client path "+path); 
         String method = req.getMethod() ;
         System.out.println("[debug] >>> client method : "+method);  
-
+        
         // OPTIONS 요청은 바로 통과 (CORS는 SecurityConfig에서 처리) 이부분 바꿈 통합 필요
         // if ("OPTIONS".equalsIgnoreCase(method)) {
         //     chain.doFilter(request, response);
@@ -61,7 +61,7 @@ public class JwtFilter implements Filter{
             res.setHeader("Access-Control-Allow-Credentials", "true");
 
             chain.doFilter(request, response);
-            return;
+            return ;
         }
 
         // 인가 정보가 필요 없을 경우
@@ -108,9 +108,6 @@ public class JwtFilter implements Filter{
             || path.startsWith("/api/users/signin")
             || path.startsWith("/api/fortune") // 추후에 연결시 제거해야됌 권환 필요
             || path.startsWith("/api/summary") // 추후에 연결시 제거해야됌 권환 필요
-            || path.startsWith("/api/users/logout") // 추후에 연결시 제거해야됌 권환 필요
-            || path.startsWith("/api/v1/boards")    // main branch merge 전 제거
-            || path.startsWith("/api/v1/todos")    // main branch merge 전 제거
-            || path.startsWith("/api/v1/weather/short-term/info");
+            || path.startsWith("/api/users/logout"); // 추후에 연결시 제거해야됌 권환 필요
     }       
 }

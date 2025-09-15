@@ -5,8 +5,8 @@ import com.lgcns.inspire3_blog.user.domain.dto.LoginResponseDTO;
 import com.lgcns.inspire3_blog.user.domain.dto.UserRequestDTO;
 import com.lgcns.inspire3_blog.user.domain.dto.UserResponseDTO;
 import com.lgcns.inspire3_blog.user.domain.entity.UserEntity;
-import com.lgcns.inspire3_blog.user.repository.UserRepository;
 import com.lgcns.inspire3_blog.user.repository.RefreshTokenRepository;
+import com.lgcns.inspire3_blog.user.repository.UserRepository;
 import com.lgcns.inspire3_blog.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 
@@ -31,12 +31,6 @@ public class UserService {
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository ;
-    public void logout(String email) {
-        System.out.println(">>> service logout redis delete"); 
-        // Redis에서 Refresh Token 제거
-        refreshTokenRepository.delete(email); 
-    }
-
     // 회원가입
     public UserResponseDTO signup(UserRequestDTO request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -85,4 +79,11 @@ public class UserService {
                 .refreshToken(refToken)
                 .build();
     }
+    public void logout(String email) {
+        System.out.println(">>> service logout redis delete"); 
+        // Redis에서 Refresh Token 제거
+        refreshTokenRepository.delete(email); 
+    
+    }
+
 }
