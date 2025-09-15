@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.lgcns.inspire3_blog.todo.domain.dto.request.TodoListCreateRequestDTO;
-import com.lgcns.inspire3_blog.todo.domain.dto.request.TodoListRequestDTO;
 import com.lgcns.inspire3_blog.todo.domain.dto.request.TodoListUpdateRequestDTO;
 import com.lgcns.inspire3_blog.todo.domain.dto.response.TodoListResponseData;
 import com.lgcns.inspire3_blog.todo.domain.entity.TodoList;
