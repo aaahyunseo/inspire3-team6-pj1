@@ -61,7 +61,7 @@ public class JwtFilter implements Filter{
             res.setHeader("Access-Control-Allow-Credentials", "true");
 
             chain.doFilter(request, response);
-            return ;
+            return;
         }
 
         // 인가 정보가 필요 없을 경우
