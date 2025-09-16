@@ -36,4 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
+src/main/inspire3_blog/resources/application.yaml
 .env
