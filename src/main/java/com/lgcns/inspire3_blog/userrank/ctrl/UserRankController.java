@@ -1,6 +1,6 @@
 package com.lgcns.inspire3_blog.userrank.ctrl;
 
-import com.lgcns.inspire3_blog.userrank.domain.entity.UserRankEntity;
+import com.lgcns.inspire3_blog.userrank.domain.dto.UserRankDTO;
 import com.lgcns.inspire3_blog.userrank.service.UserRankService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class UserRankController {
     }
 
     @GetMapping("/leaderboard")
-    public List<UserRankEntity> leaderboard(@RequestParam(defaultValue = "3") int size) {
+    public List<UserRankDTO> leaderboard(@RequestParam(defaultValue = "3") int size) {
         return rankService.getTopN(size);
     }
 }

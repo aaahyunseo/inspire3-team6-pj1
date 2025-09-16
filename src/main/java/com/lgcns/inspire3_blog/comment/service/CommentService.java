@@ -12,6 +12,7 @@ import com.lgcns.inspire3_blog.comment.domain.entity.Comment;
 import com.lgcns.inspire3_blog.comment.repository.CommentRepository;
 import com.lgcns.inspire3_blog.user.domain.entity.UserEntity;
 import com.lgcns.inspire3_blog.user.repository.UserRepository;
+import com.lgcns.inspire3_blog.userrank.service.UserRankService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +23,8 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+
+    private final UserRankService userRankService; //
 
     /*
      * 댓글 작성하기
@@ -35,6 +38,7 @@ public class CommentService {
                                     .content(request.getContent())
                                     .build();
         commentRepository.save(newComment);
+        userRankService.increaseCommentCount(request.getUserId());
     }
 
     /*

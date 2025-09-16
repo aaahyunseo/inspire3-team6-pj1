@@ -13,13 +13,13 @@ public interface UserRankRepository extends JpaRepository<UserRankEntity, Long> 
     @Modifying
     @Query("UPDATE UserRankEntity r " +
            "SET r.postCount = r.postCount + :delta, r.score = r.score + :scoreDelta, r.updatedAt = CURRENT_TIMESTAMP " +
-           "WHERE r.userId = :userId")
+           "WHERE r.user.userId = :userId")
     int increasePostAndScore(long userId, int delta, long scoreDelta);
 
     @Modifying
     @Query("UPDATE UserRankEntity r " +
            "SET r.commentCount = r.commentCount + :delta, r.score = r.score + :scoreDelta, r.updatedAt = CURRENT_TIMESTAMP " +
-           "WHERE r.userId = :userId")
+           "WHERE r.user.userId = :userId")
     int increaseCommentAndScore(long userId, int delta, long scoreDelta);
 
     List<UserRankEntity> findAllByOrderByScoreDesc(Pageable pageable);
