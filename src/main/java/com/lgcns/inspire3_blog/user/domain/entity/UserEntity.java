@@ -46,6 +46,7 @@ public class UserEntity {
 
     private String birthday; // YYYY-MM-DD 문자열로 저장 (Date로 바꿔도 됨)
 
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
