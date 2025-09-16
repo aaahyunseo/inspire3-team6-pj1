@@ -16,10 +16,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class BoardRequestDTO {
-    private Integer userId;
+    private Long userId;
     private String title;
     private String content;
-    private List<String> categories; // 카테고리 이름 리스트
+    private String category;
     private String url;
     private List<String> hashtags;   // 해시태그 이름 리스트
 }

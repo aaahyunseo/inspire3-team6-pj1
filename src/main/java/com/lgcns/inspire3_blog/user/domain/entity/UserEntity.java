@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lgcns.inspire3_blog.board.domain.entity.BoardEntity;
+import com.lgcns.inspire3_blog.board.domain.entity.BoardLike;
 import com.lgcns.inspire3_blog.comment.domain.entity.Comment;
 import com.lgcns.inspire3_blog.todo.domain.entity.TodoList;
 
@@ -55,5 +57,10 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
-    
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardEntity> boards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardLike> likes = new ArrayList<>();
 }

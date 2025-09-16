@@ -1,23 +1,23 @@
 package com.lgcns.inspire3_blog.board.service;
 
-import com.lgcns.inspire3_blog.board.domain.entity.BoardCategory;
 import com.lgcns.inspire3_blog.board.domain.entity.BoardEntity;
 import com.lgcns.inspire3_blog.board.domain.entity.BoardHashtag;
-import com.lgcns.inspire3_blog.board.domain.entity.CategoryEntity;
+import com.lgcns.inspire3_blog.board.domain.entity.BoardLike;
 import com.lgcns.inspire3_blog.board.domain.entity.HashtagEntity;
 import com.lgcns.inspire3_blog.board.domain.dto.BoardRequestDTO;
 import com.lgcns.inspire3_blog.board.domain.dto.BoardResponseDTO;
+import com.lgcns.inspire3_blog.board.repository.BoardLikeRepository;
 import com.lgcns.inspire3_blog.board.repository.BoardRepository;
-import com.lgcns.inspire3_blog.board.repository.CategoryEntityRepository;
 import com.lgcns.inspire3_blog.board.repository.HashtagEntityRepository;
 import com.lgcns.inspire3_blog.userrank.service.UserRankService;
+import com.lgcns.inspire3_blog.user.domain.entity.UserEntity;
+import com.lgcns.inspire3_blog.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,10 +28,13 @@ public class BoardService {
     private BoardRepository boardRepository;
 
     @Autowired
-    private CategoryEntityRepository categoryRepository;
+    private HashtagEntityRepository hashtagRepository;
 
     @Autowired
-    private HashtagEntityRepository hashtagRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private BoardLikeRepository boardLikeRepository;
 
     @Autowired
     private UserRankService userRankService; 
@@ -45,52 +48,34 @@ public class BoardService {
 
     @Transactional
     public BoardResponseDTO insert(BoardRequestDTO dto) {
+        UserEntity user = findUserById(dto.getUserId());
+        
         // board 생성
         BoardEntity board = BoardEntity.builder()
-                .userId(dto.getUserId())
+                .user(user)
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .url(dto.getUrl())
-                .createdAt(java.time.LocalDate.now().toString())
+                .category(dto.getCategory())
                 .viewCount(0)
                 .likeCount(0)
                 .build();
         
-        if (board.getBoardCategories() == null) board.setBoardCategories(new ArrayList<>());
-        if (board.getBoardHashtags() == null) board.setBoardHashtags(new ArrayList<>());
-
-        // category 연결
-        if (dto.getCategories() != null) {
-            for (String name : dto.getCategories()) {
-                CategoryEntity category = categoryRepository.findByName(name)
-                        .orElseGet(() -> categoryRepository.save(
-                                CategoryEntity.builder().name(name).build()
-                        ));
-
-                BoardCategory boardCategory = BoardCategory.builder()
-                        .board(board)
-                        .category(category)
-                        .build();
-
-                board.getBoardCategories().add(boardCategory);
-            }
-        }
-
         // hashtag 연결
         if (dto.getHashtags() != null) {
-            for (String name : dto.getHashtags()) {
-                HashtagEntity hashtag = hashtagRepository.findByName(name)
-                        .orElseGet(() -> hashtagRepository.save(
-                                HashtagEntity.builder().name(name).build()
-                        ));
-
-                BoardHashtag boardHashtag = BoardHashtag.builder()
-                        .board(board)
-                        .hashtag(hashtag)
-                        .build();
-
-                board.getBoardHashtags().add(boardHashtag);
-            }
+            List<BoardHashtag> hashtags = dto.getHashtags().stream()
+                    .map(name -> {
+                        HashtagEntity hashtag = hashtagRepository.findByName(name)
+                                .orElseGet(() -> hashtagRepository.save(
+                                        HashtagEntity.builder().name(name).build()
+                                ));
+                        return BoardHashtag.builder()
+                                .board(board)
+                                .hashtag(hashtag)
+                                .build();
+                    })
+                    .collect(Collectors.toList());
+            board.setBoardHashtags(hashtags);
         }
 
         BoardEntity saved = boardRepository.save(board);
@@ -100,34 +85,60 @@ public class BoardService {
     }
 
     public BoardResponseDTO findBoard(Integer boardId) {
-        return boardRepository.findById(boardId)
-            .map(board -> {
-                // 상세 조회 시 viewCount 증가
-                board.setViewCount(board.getViewCount() + 1);
-                boardRepository.save(board);
-                return BoardResponseDTO.from(board);
-            })
-            .orElseThrow(() -> new RuntimeException("board를 찾을 수 없습니다."));
+        BoardEntity board = findBoardById(boardId);
+                
+        // 상세 조회 시 viewCount 증가
+        board.setViewCount(board.getViewCount() + 1);
+        return BoardResponseDTO.from(board);
     }
 
     // 좋아요 추가/취소 
-    public boolean addLike(Integer boardId) {
-        BoardEntity entity = boardRepository.findById(boardId).orElse(null);
-        if (entity != null) {
-            entity.setLikeCount(entity.getLikeCount() + 1);
-            boardRepository.save(entity);
-            return true;
-        }
-        return false;
+    @Transactional
+    public boolean addLike(Integer boardId, Long userId) {
+        UserEntity user = findUserById(userId);
+        BoardEntity board = findBoardById(boardId);
+
+        // 이미 좋아요 눌렀을 경우
+        if (boardLikeRepository.existsByBoardAndUser(board, user)) return false;
+
+        BoardLike like = BoardLike.builder()
+                .board(board)
+                .user(user)
+                .build();
+        boardLikeRepository.save(like);
+
+        board.setLikeCount(board.getLikeCount() + 1);
+        return true;
     }
 
-    public boolean cancelLike(Integer boardId) {
-        BoardEntity entity = boardRepository.findById(boardId).orElse(null);
-        if (entity != null && entity.getLikeCount() > 0) {
-            entity.setLikeCount(entity.getLikeCount() - 1);
-            boardRepository.save(entity);
-            return true;
-        }
-        return false;
+    @Transactional
+    public boolean cancelLike(Integer boardId, Long userId) {
+        UserEntity user = findUserById(userId);
+        BoardEntity board = findBoardById(boardId);
+
+        BoardLike like = boardLikeRepository.findByBoardAndUser(board, user)
+                .orElse(null);
+        if (like == null) return false;
+
+        boardLikeRepository.delete(like);
+
+        board.setLikeCount(Math.max(0, board.getLikeCount() - 1));
+        return true;
+    }
+
+    /*
+     * 특정 boardID로 보드 찾기
+     */
+    private BoardEntity findBoardById(Integer boardId) {
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("해당 ID의 board를 찾을 수 없습니다."));
+    }
+
+    /*
+     * 특정 userID로 유저 찾기
+     */
+    private UserEntity findUserById(Long userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("해당 ID의 user를 찾을 수 없습니다."));
     }
 }

@@ -48,6 +48,7 @@ public class SecurityConfig {
                     "/api/v1/users/signup",
                     "/api/v1/users/signin",
                     "/api/v1/users/logout",
+                    "/api/v1/users/**",  // 추후에 연결시 제거해야됌 권환 필요
                     "/api/v1/fortune/**",  // 추후에 연결시 제거해야됌 권환 필요
                     "/api/v1/summary/**",
                     "/api/v1/boards/**",
@@ -57,7 +58,8 @@ public class SecurityConfig {
                     "/api/v1/rank/**",
                     "/v3/api-docs/**", // main branch merge 전 제거
                     "/api/v1/boards/**",  // main branch merge 전 제거
-                    "/api/v1/comments/**"  // main branch merge 전 제거
+                    "/api/v1/comments/**",  // main branch merge 전 제거
+                    "/api/v1/mypage/**"  // main branch merge 전 제거
 
                 ).permitAll()
                 .anyRequest().authenticated()

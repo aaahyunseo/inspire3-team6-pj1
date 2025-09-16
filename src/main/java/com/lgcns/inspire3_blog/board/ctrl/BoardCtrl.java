@@ -49,8 +49,8 @@ public class BoardCtrl {
 
     // 좋아요 추가
     @PostMapping("/like/{boardId}")
-    public ResponseEntity<Void> addLike(@PathVariable("boardId") Integer boardId) {
-        boolean result = boardService.addLike(boardId);
+    public ResponseEntity<Void> addLike(@PathVariable("boardId") Integer boardId, @RequestParam("userId") Long userId) {
+        boolean result = boardService.addLike(boardId, userId);
         if (result) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
@@ -60,8 +60,8 @@ public class BoardCtrl {
 
     // 좋아요 취소
     @DeleteMapping("/like/{boardId}")
-    public ResponseEntity<Void> cancelLike(@PathVariable("boardId") Integer boardId) {
-        boolean result = boardService.cancelLike(boardId);
+    public ResponseEntity<Void> cancelLike(@PathVariable("boardId") Integer boardId, @RequestParam("userId") Long userId) {
+        boolean result = boardService.cancelLike(boardId, userId);
         if (result) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
