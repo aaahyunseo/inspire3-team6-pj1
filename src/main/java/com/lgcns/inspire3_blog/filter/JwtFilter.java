@@ -104,10 +104,14 @@ public class JwtFilter implements Filter{
     public boolean isPath(String path) {
     return path.startsWith("/swagger-ui")
             || path.startsWith("/v3/api-docs")
-            || path.startsWith("/api/users/signup")
-            || path.startsWith("/api/users/signin")
-            || path.startsWith("/api/fortune") // 추후에 연결시 제거해야됌 권환 필요
-            || path.startsWith("/api/summary") // 추후에 연결시 제거해야됌 권환 필요
-            || path.startsWith("/api/users/logout"); // 추후에 연결시 제거해야됌 권환 필요
+            || path.startsWith("/api/v1/users/signup")
+            || path.startsWith("/api/v1/users/signin")
+            || path.startsWith("/api/v1/users/logout") // 추후에 연결시 제거해야됌 권환 필요
+            || path.startsWith("api/v1/rank/**")
+            || path.startsWith("/api/v1/fortune") // 추후에 연결시 제거해야됌 권환 필요
+            || path.startsWith("/api/v1/summary") // 추후에 연결시 제거해야됌 권환 필요
+            || path.startsWith("/api/v1/boards/**")
+            || path.startsWith("/api/v1/todos")    // main branch merge 전 제거
+            || path.startsWith("/api/v1/weather/short-term/info");
     }       
 }
