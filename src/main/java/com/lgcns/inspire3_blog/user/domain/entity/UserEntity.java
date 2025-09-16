@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lgcns.inspire3_blog.comment.domain.entity.Comment;
 import com.lgcns.inspire3_blog.todo.domain.entity.TodoList;
 
 import jakarta.persistence.CascadeType;
@@ -50,5 +51,8 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TodoList> todos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
     
 }

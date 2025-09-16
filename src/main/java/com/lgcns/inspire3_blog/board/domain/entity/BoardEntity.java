@@ -3,6 +3,8 @@ package com.lgcns.inspire3_blog.board.domain.entity;
 
 import java.util.List;
 
+import com.lgcns.inspire3_blog.comment.domain.entity.Comment;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,4 +43,6 @@ public class BoardEntity {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardHashtag> boardHashtags;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 }

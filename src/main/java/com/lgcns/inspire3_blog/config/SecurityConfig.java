@@ -53,8 +53,10 @@ public class SecurityConfig {
                     "api/users/logout",
                     "/v3/api-docs/**",
                     "/api/v1/weather/short-term/info",
+                    "/api/v1/comments/*/list",
                     "/api/v1/todos/**",  // main branch merge 전 제거
-                    "/api/v1/boards/**"  // main branch merge 전 제거
+                    "/api/v1/boards/**",  // main branch merge 전 제거
+                    "/api/v1/comments/**"  // main branch merge 전 제거
                 ).permitAll()
                 .anyRequest().authenticated()
             );
