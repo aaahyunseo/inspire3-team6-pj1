@@ -1,8 +1,6 @@
 package com.lgcns.inspire3_blog.weather.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lgcns.inspire3_blog.weather.dto.WeatherRequestDTO;
 import com.lgcns.inspire3_blog.weather.dto.WeatherResponseDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -35,14 +32,11 @@ public class WeatherService {
         "0200", "0500", "0800", "1100", "1400", "1700", "2000", "2300"
     };
 
-    public WeatherResponseDTO getWeatherInfo(WeatherRequestDTO request) {
-        LocalDateTime now = LocalDateTime.of(
-            LocalDate.parse(request.getBaseDate(), DateTimeFormatter.BASIC_ISO_DATE),
-            LocalTime.parse(request.getBaseTime(), DateTimeFormatter.ofPattern("HHmm"))
-        );
+    public WeatherResponseDTO getWeatherInfo() {
+        LocalDateTime now = LocalDateTime.now();
 
         String adjustedBaseTime = adjustBaseTime(now);
-        String adjustedBaseDate = request.getBaseDate();
+        String adjustedBaseDate = now.format(DateTimeFormatter.BASIC_ISO_DATE);
 
         if (adjustedBaseTime.equals("2300") && now.getHour() < 2) {
             adjustedBaseDate = now.minusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
