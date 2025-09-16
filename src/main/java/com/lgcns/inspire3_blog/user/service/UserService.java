@@ -7,9 +7,9 @@ import com.lgcns.inspire3_blog.user.domain.dto.UserResponseDTO;
 import com.lgcns.inspire3_blog.user.domain.entity.UserEntity;
 import com.lgcns.inspire3_blog.user.repository.RefreshTokenRepository;
 import com.lgcns.inspire3_blog.user.repository.UserRepository;
-import com.lgcns.inspire3_blog.user.repository.RefreshTokenRepository;
-import com.lgcns.inspire3_blog.user.repository.UserRepository;
 import com.lgcns.inspire3_blog.util.JwtProvider;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +76,31 @@ public class UserService {
                 .birthday(entity.getBirthday())
                 .accessToken(accToken)
                 .refreshToken(refToken)
+                .build();
+    }
+
+    @Transactional
+    public UserResponseDTO updateUserInfo(Long userId, UserRequestDTO dto) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("해당 유저를 찾을 수 없습니다."));
+
+        // 본인 확인
+        if (!passwordEncoder.matches(dto.getPasswd(), user.getPasswd())) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 이름, 이메일, 생일 수정
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setBirthday(dto.getBirthday());
+
+        userRepository.save(user);
+
+        return UserResponseDTO.builder()
+                .userId(user.getUserId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .birthday(user.getBirthday())
                 .build();
     }
 

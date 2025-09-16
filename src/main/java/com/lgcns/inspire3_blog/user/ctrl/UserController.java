@@ -28,4 +28,10 @@ public class UserController {
     public ResponseEntity<LoginResponseDTO> signin(@RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(userService.signin(request));
     }
+
+    // 회원 정보 수정
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<UserResponseDTO> updateUserInfo(@PathVariable Long userId, @RequestBody UserRequestDTO request) {
+        return ResponseEntity.ok(userService.updateUserInfo(userId, request));
+    }
 }

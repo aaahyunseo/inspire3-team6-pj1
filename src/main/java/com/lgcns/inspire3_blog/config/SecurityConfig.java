@@ -48,6 +48,7 @@ public class SecurityConfig {
                     "/api/v1/users/signup",
                     "/api/v1/users/signin",
                     "/api/v1/users/logout",
+                    "/api/v1/users/**",  // 추후에 연결시 제거해야됌 권환 필요
                     "/api/v1/fortune/**",  // 추후에 연결시 제거해야됌 권환 필요
                     "/api/v1/summary/**",
                     "/api/v1/weather/short-term/info",
