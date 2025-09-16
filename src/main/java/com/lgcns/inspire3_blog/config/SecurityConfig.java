@@ -45,16 +45,17 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/swagger-ui/**",
-                    "/api/users/signup",
-                    "/api/users/signin",
-                    "/swagger-ui/**",
-                    "/api/fortune/**",  // 추후에 연결시 제거해야됌 권환 필요
-                    "/api/summary/**",
-                    "api/users/logout",
-                    "/v3/api-docs/**",
+                    "/api/v1/users/signup",
+                    "/api/v1/users/signin",
+                    "/api/v1/users/logout",
+                    "/api/v1/fortune/**",  // 추후에 연결시 제거해야됌 권환 필요
+                    "/api/v1/summary/**",
+                    "/api/v1/board/**",
                     "/api/v1/weather/short-term/info",
                     "/api/v1/todos/**",  // main branch merge 전 제거
-                    "/api/v1/boards/**"  // main branch merge 전 제거
+                    "/api/v1/rank/**",
+                    "/api/v1/todos/**" ,
+                    "/v3/api-docs/**" // main branch merge 전 제거
                 ).permitAll()
                 .anyRequest().authenticated()
             );

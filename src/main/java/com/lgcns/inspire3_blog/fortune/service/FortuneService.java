@@ -17,13 +17,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FortuneService {
 
-    // yaml 설정에 따라 택 1
-    @Value("${openai.model}")
+    @Value("${OPEN_AI_MODEL}")
     private String model;
-    @Value("${openai.api-key}")
+
+    @Value("${OPEN_AI_KEY}")
     private String key;
-    @Value("${openai.url}")
+
+    @Value("${OPEN_AI_URL}")
     private String url;
+
+    // yaml 설정에 따라 택 1
+    // @Value("${openai.model}")
+    // private String model;
+    // @Value("${openai.api-key}")
+    // private String key;
+    // @Value("${openai.url}")
+    // private String url;
 
     // @Value("${OPEN_AI_MODEL}")
     // private String model;

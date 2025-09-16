@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/summary")
+@RequestMapping("/api/v1/summary")
 @RequiredArgsConstructor
 public class SummaryController {
 

@@ -11,7 +11,7 @@ import com.lgcns.inspire3_blog.fortune.service.FortuneService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/fortune")
+@RequestMapping("/api/v1/fortune")
 @RequiredArgsConstructor
 public class FortuneController {
 

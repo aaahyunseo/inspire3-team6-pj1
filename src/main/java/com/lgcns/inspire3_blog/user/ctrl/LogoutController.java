@@ -11,8 +11,8 @@ import com.lgcns.inspire3_blog.user.repository.RefreshTokenRepository;
 import com.lgcns.inspire3_blog.util.JwtProvider;
 
 @RestController
-@RequestMapping("/api/users")
-public class LogoutCtrl {
+@RequestMapping("/api/v1/users")
+public class LogoutController {
     @Autowired
     private RefreshTokenRepository refreshTokenRepository ;
 
