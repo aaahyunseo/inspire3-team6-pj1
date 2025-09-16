@@ -39,7 +39,7 @@ public class CommentController {
     /*
      * 특정 Board 댓글 조회하기 
      */
-    @GetMapping("/{boardId}/list")
+    @GetMapping("/list/{boardId}")
     public ResponseEntity<CommentResponseData> getCommentList(@PathVariable("boardId") Integer boardId) {
         CommentResponseData commentResponseData = commentService.getCommentList(boardId);
         return new ResponseEntity<CommentResponseData>(commentResponseData, HttpStatus.OK);

@@ -112,7 +112,7 @@ public class JwtFilter implements Filter{
             || path.startsWith("/api/v1/boards")    // main branch merge 전 제거
             || path.startsWith("/api/v1/comments")    // main branch merge 전 제거
             || path.startsWith("/api/v1/todos")    // main branch merge 전 제거
-            || path.startsWith("/api/v1/comments/*/list")
+            || path.startsWith("/api/v1/comments/list")
             || path.startsWith("/api/v1/weather/short-term/info");
     }       
 }
