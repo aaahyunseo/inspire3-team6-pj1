@@ -6,12 +6,14 @@ import com.lgcns.inspire3_blog.user.domain.dto.UserRequestDTO;
 import com.lgcns.inspire3_blog.user.domain.dto.UserResponseDTO;
 import com.lgcns.inspire3_blog.user.domain.entity.UserEntity;
 import com.lgcns.inspire3_blog.user.repository.UserRepository;
+import com.lgcns.inspire3_blog.user.repository.RefreshTokenRepository;
 import com.lgcns.inspire3_blog.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
+    @Autowired
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;  // BCrypt
+
+    @Autowired
     private final JwtProvider jwtprovider;
+
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository ;
+    public void logout(String email) {
+        System.out.println(">>> service logout redis delete"); 
+        // Redis에서 Refresh Token 제거
+        refreshTokenRepository.delete(email); 
+    }
 
     // 회원가입
     public UserResponseDTO signup(UserRequestDTO request) {
