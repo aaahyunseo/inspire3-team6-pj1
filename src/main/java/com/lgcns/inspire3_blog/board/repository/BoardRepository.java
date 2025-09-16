@@ -12,12 +12,20 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
 
     // 카테고리 이름으로 게시글 조회 (다대다 관계)
-    @Query("SELECT b FROM BoardEntity b JOIN b.categories c WHERE c.name = :categoryName")
+    @Query("SELECT b FROM BoardEntity b " +
+       "JOIN b.boardCategories bc " +
+       "JOIN bc.category c " +
+       "WHERE c.name = :categoryName")
     List<BoardEntity> findByCategoryName(@Param("categoryName") String categoryName);
 
+
     // 해시태그 이름으로 게시글 조회 (다대다 관계)
-    @Query("SELECT b FROM BoardEntity b JOIN b.hashtags h WHERE h.name = :hashtagName")
+    @Query("SELECT b FROM BoardEntity b " +
+       "JOIN b.boardHashtags bh " +
+       "JOIN bh.hashtag h " +
+       "WHERE h.name = :hashtagName")
     List<BoardEntity> findByHashtagName(@Param("hashtagName") String hashtagName);
+
 
     // 제목으로 게시글 검색
     List<BoardEntity> findByTitleContaining(String keyword);

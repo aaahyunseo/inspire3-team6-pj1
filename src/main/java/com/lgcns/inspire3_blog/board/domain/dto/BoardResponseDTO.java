@@ -3,8 +3,6 @@ package com.lgcns.inspire3_blog.board.domain.dto;
 import java.util.List;
 
 import com.lgcns.inspire3_blog.board.domain.entity.BoardEntity;
-import com.lgcns.inspire3_blog.board.domain.entity.CategoryEntity;
-import com.lgcns.inspire3_blog.board.domain.entity.HashtagEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,16 +36,16 @@ public class BoardResponseDTO {
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .categories(
-                    entity.getCategories() == null ? null :
-                    entity.getCategories().stream()
-                        .map(CategoryEntity::getName)
+                    entity.getBoardCategories() == null ? null :
+                entity.getBoardCategories().stream()
+                        .map(boardCategory -> boardCategory.getCategory().getName())
                         .toList()
                 )
                 .url(entity.getUrl())
                 .hashtags(                
-                    entity.getHashtags() == null ? null :
-                    entity.getHashtags().stream()
-                        .map(HashtagEntity::getName)
+                    entity.getBoardHashtags() == null ? null :
+                    entity.getBoardHashtags().stream()
+                        .map(boardHashtag -> boardHashtag.getHashtag().getName())
                         .toList()
                 )
                 .createdAt(entity.getCreatedAt())

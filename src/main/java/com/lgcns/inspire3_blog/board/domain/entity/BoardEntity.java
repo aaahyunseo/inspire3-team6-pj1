@@ -26,10 +26,8 @@ public class BoardEntity {
     @Column(length = 500)
     private String content;
 
-
     @Column(length = 200)
     private String url; // 관련 링크
-
 
     private String createdAt;
     private String updatedAt;
@@ -37,21 +35,10 @@ public class BoardEntity {
     private Integer likeCount;
 
     // 카테고리, 해시태크
-    @ManyToMany
-    @JoinTable(
-        name = "BOARD_CATEGORY",
-        joinColumns = @JoinColumn(name = "board_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private List<CategoryEntity> categories;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardCategory> boardCategories;
 
-    @ManyToMany
-    @JoinTable(
-        name = "BOARD_HASHTAG",
-        joinColumns = @JoinColumn(name = "board_id"),
-        inverseJoinColumns = @JoinColumn(name = "hashtag_id")
-    )
-    private List<HashtagEntity> hashtags;
-
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardHashtag> boardHashtags;
 
 }

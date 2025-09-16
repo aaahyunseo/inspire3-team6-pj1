@@ -12,7 +12,7 @@ import com.lgcns.inspire3_blog.board.domain.dto.BoardResponseDTO;
 import com.lgcns.inspire3_blog.board.service.BoardService;
 
 @RestController
-@RequestMapping("/api/v1/board")
+@RequestMapping("/api/v1/boards")
 public class BoardCtrl {
 
     @Autowired
