@@ -1,5 +1,6 @@
 package com.lgcns.inspire3_blog.board.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,4 +13,5 @@ import com.lgcns.inspire3_blog.user.domain.entity.UserEntity;
 public interface BoardLikeRepository extends JpaRepository<BoardLike, UUID> {
     boolean existsByBoardAndUser(BoardEntity board, UserEntity user);
     Optional<BoardLike> findByBoardAndUser(BoardEntity board, UserEntity user);
+    List<BoardLike> findAllByUser(UserEntity user);
 }

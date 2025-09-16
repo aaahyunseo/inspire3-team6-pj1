@@ -56,7 +56,8 @@ public class SecurityConfig {
                     "/api/v1/rank/**",
                     "/v3/api-docs/**", // main branch merge 전 제거
                     "/api/v1/boards/**",  // main branch merge 전 제거
-                    "/api/v1/comments/**"  // main branch merge 전 제거
+                    "/api/v1/comments/**",  // main branch merge 전 제거
+                    "/api/v1/mypage/**"  // main branch merge 전 제거
 
                 ).permitAll()
                 .anyRequest().authenticated()
