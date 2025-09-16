@@ -76,11 +76,5 @@ public class UserService {
                 .refreshToken(refToken)
                 .build();
     }
-    public void logout(String email) {
-        System.out.println(">>> service logout redis delete"); 
-        // Redis에서 Refresh Token 제거
-        refreshTokenRepository.delete(email); 
-    
-    }
 
 }

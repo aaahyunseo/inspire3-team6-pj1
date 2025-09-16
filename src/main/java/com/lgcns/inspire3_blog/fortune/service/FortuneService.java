@@ -16,7 +16,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class FortuneService {
-
     // yaml 설정에 따라 택 1
     @Value("${openai.model}")
     private String model;
@@ -31,7 +30,6 @@ public class FortuneService {
     // private String key;
     // @Value("${OPEN_AI_URL}")
     // private String url;
-
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
