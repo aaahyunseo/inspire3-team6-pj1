@@ -50,6 +50,7 @@ public class SecurityConfig {
                     "/api/v1/users/logout",
                     "/api/v1/fortune/**",  // 추후에 연결시 제거해야됌 권환 필요
                     "/api/v1/summary/**",
+                    "/api/v1/boards/**",
                     "/api/v1/weather/short-term/info",
                     "/api/v1/comments/*/list",
                     "/api/v1/todos/**",  // main branch merge 전 제거

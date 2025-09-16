@@ -10,6 +10,7 @@ import com.lgcns.inspire3_blog.board.domain.dto.BoardResponseDTO;
 import com.lgcns.inspire3_blog.board.repository.BoardRepository;
 import com.lgcns.inspire3_blog.board.repository.CategoryEntityRepository;
 import com.lgcns.inspire3_blog.board.repository.HashtagEntityRepository;
+import com.lgcns.inspire3_blog.userrank.service.UserRankService;
 
 import jakarta.transaction.Transactional;
 
@@ -31,6 +32,9 @@ public class BoardService {
 
     @Autowired
     private HashtagEntityRepository hashtagRepository;
+
+    @Autowired
+    private UserRankService userRankService; 
 
     public List<BoardResponseDTO> select() {
         List<BoardEntity> entities = boardRepository.findAll();
@@ -90,6 +94,8 @@ public class BoardService {
         }
 
         BoardEntity saved = boardRepository.save(board);
+        // ✅ 글 작성 시 랭크 점수 증가
+        userRankService.increasePostCount(dto.getUserId());
         return BoardResponseDTO.from(saved);
     }
 

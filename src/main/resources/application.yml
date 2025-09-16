@@ -69,7 +69,7 @@ openApi:
     callBackUrl: ${CALLBACKURL}
     dataType: ${TYPE} 
 
-# openai:
-#     api-key: ${OPEN_AI_KEY}
-#     url: ${OPEN_AI_URL}
-#     model: ${OPEN_AI_MODEL}
+openai:
+    api-key: ${OPEN_AI_KEY}
+    url: ${OPEN_AI_URL}
+    model: ${OPEN_AI_MODEL}
