@@ -29,6 +29,7 @@ public class SecurityConfig {
                     "/api/users/signin",
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
+                    "/api/v1/weather/short-term/info",
                     "/api/v1/todos/**"  // main branch merge 전 제거
                 ).permitAll()
                 .anyRequest().authenticated()
