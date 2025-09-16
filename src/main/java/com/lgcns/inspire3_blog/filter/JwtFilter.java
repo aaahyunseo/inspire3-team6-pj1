@@ -101,6 +101,7 @@ public class JwtFilter implements Filter{
             || path.startsWith("/v3/api-docs")
             || path.startsWith("/api/users/signup")
             || path.startsWith("/api/users/signin")
-            || path.startsWith("/api/v1/todos");    // main branch merge 전 제거
+            || path.startsWith("/api/v1/todos")    // main branch merge 전 제거
+            || path.startsWith("/v1/weather/short-term/info");
     }       
 }
