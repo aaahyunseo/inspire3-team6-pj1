@@ -110,7 +110,7 @@ public class JwtFilter implements Filter{
             || path.startsWith("/api/v1/rank")
             || path.startsWith("/api/v1/fortune") // 추후에 연결시 제거해야됌 권환 필요
             || path.startsWith("/api/v1/summary") // 추후에 연결시 제거해야됌 권환 필요
-            || path.startsWith("/api/v1/boards/**")
+            || path.startsWith("/api/v1/boards")
             || path.startsWith("/api/v1/comments/**")    // main branch merge 전 제거
             || path.startsWith("/api/v1/todos")    // main branch merge 전 제거
             || path.startsWith("/api/v1/mypage")    // main branch merge 전 제거

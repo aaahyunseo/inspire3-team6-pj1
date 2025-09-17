@@ -17,4 +17,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
 
     // 유저가 작성한 게시글 목록 조회
     List<BoardEntity> findAllByUser(UserEntity user);
+
+    // 카테고리 별 게시글 목록 조회
+    List<BoardEntity> findByCategory(String category);
 }

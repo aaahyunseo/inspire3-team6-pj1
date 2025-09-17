@@ -25,6 +25,12 @@ public class BoardCtrl {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // 카테고리 별 게시글 목록 조회
+    @GetMapping("/category")
+    public ResponseEntity<List<BoardResponseDTO>> getBoardsByCategory(@RequestParam("category") String category) {
+        return ResponseEntity.ok(boardService.findByCategory(category));
+    }
+
     // 등록
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody BoardRequestDTO request) {

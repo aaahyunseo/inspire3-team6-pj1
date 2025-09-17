@@ -84,6 +84,13 @@ public class BoardService {
         return BoardResponseDTO.from(saved);
     }
 
+    public List<BoardResponseDTO> findByCategory(String category) {
+    List<BoardEntity> boards = boardRepository.findByCategory(category);
+    return boards.stream()
+            .map(BoardResponseDTO::from)
+            .collect(Collectors.toList());
+    }
+
     public BoardResponseDTO findBoard(Integer boardId) {
         BoardEntity board = findBoardById(boardId);
                 
