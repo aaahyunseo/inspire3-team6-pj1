@@ -42,6 +42,17 @@ public class BoardCtrl {
         }
     }
 
+    // 게시글 삭제
+    @DeleteMapping("/delete/{boardId}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable("boardId") Integer boardId) {
+        boolean deleted = boardService.delete(boardId);
+        if (deleted) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     // 상세 조회
     @GetMapping("/read/{boardId}")
     public ResponseEntity<BoardResponseDTO> read(@PathVariable("boardId") Integer boardId) {

@@ -148,4 +148,16 @@ public class BoardService {
         return userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("해당 ID의 user를 찾을 수 없습니다."));
     }
+
+    /**
+     * 게시글 삭제
+     */
+    @Transactional
+    public boolean delete(Integer boardId) {
+        BoardEntity board = boardRepository.findById(boardId).orElse(null);
+        if (board == null) return false;
+        boardRepository.delete(board);
+        return true;
+}
+
 }
