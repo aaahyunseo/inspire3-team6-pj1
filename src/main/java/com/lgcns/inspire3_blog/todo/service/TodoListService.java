@@ -41,7 +41,7 @@ public class TodoListService {
         UserEntity user = findUserById(userId);
         LocalDate today = LocalDate.now();
         
-        List<TodoList> todoList = todoListRepository.findAllByUserAndCreatedAt(user, today);
+        List<TodoList> todoList = todoListRepository.findTodosByUserAndDate(user, today);
 
         return TodoListResponseData.from(todoList);
     }
@@ -55,6 +55,8 @@ public class TodoListService {
         TodoList newTodo = TodoList.builder()
                                     .user(user)
                                     .content(request.getContent())
+                                    .startDate(request.getStartDate())
+                                    .endDate(request.getEndDate())
                                     .done(false)
                                     .build();
                                    
@@ -71,6 +73,8 @@ public class TodoListService {
 
         // 부분 수정 가능하도록 로직 설계
         if (request.getContent() != null) updateTodo.setContent(request.getContent());
+        if (request.getStartDate() != null) updateTodo.setStartDate(request.getStartDate());
+        if (request.getEndDate() != null) updateTodo.setEndDate(request.getEndDate());
 
         todoListRepository.save(updateTodo);
     }

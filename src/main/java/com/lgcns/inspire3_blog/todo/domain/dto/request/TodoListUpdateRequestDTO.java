@@ -1,5 +1,7 @@
 package com.lgcns.inspire3_blog.todo.domain.dto.request;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,4 +17,6 @@ public class TodoListUpdateRequestDTO {
     private Long userId;
     private Long todoId;
     private String content;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

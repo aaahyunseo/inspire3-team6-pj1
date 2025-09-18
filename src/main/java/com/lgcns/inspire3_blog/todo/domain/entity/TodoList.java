@@ -2,14 +2,10 @@ package com.lgcns.inspire3_blog.todo.domain.entity;
 
 import java.time.LocalDate;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.lgcns.inspire3_blog.user.domain.entity.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +28,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "todos")
-@EntityListeners(AuditingEntityListener.class)
 public class TodoList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,8 +39,11 @@ public class TodoList {
     @Column(nullable = false)
     private boolean done;
 
-    @CreatedDate
-    private LocalDate createdAt;
+    @Column(nullable = false)
+    private LocalDate startDate;
+
+    @Column(nullable = false)
+    private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id")
